@@ -22,16 +22,24 @@ for h in root.handlers:
     h.setLevel(logging.INFO)
     h.setFormatter(formatter)
     
-def migrate(accountID,datastreamID,urlPrefix, auth):
+
+def get_version(props):
+    for p in props:
+        if p.get("key") == "version":
+            return p.get("value")
+    return None
+
+def migrate(accountID,datastreamID,urlPrefix, auth, bucket):
     headers = {"Authorization": auth}
     url = f"{urlPrefix}accounts/{accountID}/datastreams/{datastreamID}/properties"
     resp = requests.get(url,headers=headers)
-    isV2 = "1.2" == resp.json()['properties'][0]['value']
+    version = get_version(resp.json()['properties'])
+    isV2 = "1.2" == version
     if(not isV2):
         logging.info("Starting Input Signal Mirgation")
-        createInputSignalConnection(accountID, datastreamID,urlPrefix, auth)
+        createInputSignalConnection(accountID, datastreamID,urlPrefix, auth, bucket)
         logging.info("Starting Output Signal Mirgation")
-        createOutputSignalConnection(accountID, datastreamID,urlPrefix, auth)
+        createOutputSignalConnection(accountID, datastreamID,urlPrefix, auth, bucket)
         
         timeUpdateLink = urlPrefix+"accounts/"+accountID+"/datastreams/"+datastreamID+"/"
         versionUpdateLink = urlPrefix+"accounts/"+accountID+"/datastreams/"+datastreamID+"/properties/"
@@ -48,10 +56,11 @@ def migrate(accountID,datastreamID,urlPrefix, auth):
         resp = requests.put(timeUpdateLink, headers=headers,data=oldTimeUpdateJson)
         resp = requests.put(timeUpdateLink, headers=headers,data=timeUpdateJson)
         resp = requests.post(versionUpdateLink, headers=headers, data=versionUpdateJson)
-    
+    else:
+        print("already migrated datastream " + datastreamID)
 
 
-def migrateInputsFromCSV(csvFile, appUrl,getAll, auth):
+def migrateInputsFromCSV(csvFile, appUrl,getAll, auth, bucket):
     logging.warning("START")
     header = {"Authorization": auth}
     with open(csvFile, 'r') as read_obj:
@@ -81,7 +90,7 @@ def migrateInputsFromCSV(csvFile, appUrl,getAll, auth):
                 print(accountValid,dataValid )  
                 if (dataValid):
                     logging.info("Starting Migration Process"+ str(row))
-                    migrate(accountID,dataID, appUrl, auth)
+                    migrate(accountID,dataID, appUrl, auth, bucket)
                 else:
                     print("An exception occurred in CSV Line " + str(row))
             elif(getAll and accountValid):
@@ -93,7 +102,7 @@ def migrateInputsFromCSV(csvFile, appUrl,getAll, auth):
                     datastreamID = requests.get(newUrl,headers=header).json()[0]['id']
                     datastreamIDs.extend(datastreamID)
                 for i in range(number_of_datastreams):
-                    migrate(accountID,datastreamIDs[i], appUrl, auth)
+                    migrate(accountID,datastreamIDs[i], appUrl, auth, bucket)
             else:
                     print("An exception occurred in CSV Line " + str(row))
         logging.warning("END")
@@ -102,9 +111,10 @@ def migrateInputsFromCSV(csvFile, appUrl,getAll, auth):
 load_dotenv()
 auth1 = os.environ.get('AUTH')
 appUrl = os.environ.get('APP_URL')
+bucket = os.environ.get('BUCKET')
 file = sys.argv[1]
 try:
     getAllDatastreams = sys.argv[2] == '-t'
 except:
     getAllDatastreams = False
-migrateInputsFromCSV(file,appUrl,getAllDatastreams,auth1)
+migrateInputsFromCSV(file,appUrl,getAllDatastreams,auth1, bucket)

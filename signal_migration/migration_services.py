@@ -18,7 +18,7 @@ for h in root.handlers:
     h.setFormatter(formatter)
 
 
-def createInputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
+def createInputSignalConnection(acccountID, datastreamID, urlPrefix,auth, bucket):
     try:
         os.mkdir('workDir')
     except:
@@ -61,6 +61,7 @@ def createInputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
     logging.info("Begin Migrating model "+flowName)
 
     template = """ [
+                {% set comma = joiner(",") %}
                 {% for key, value in dataMap.items() %}
                     {% set list = contextMap.filePath.split('signal=') %} 
                     {% set list = list[1].split('/') %} 
@@ -108,7 +109,7 @@ def createInputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
                 template += signalJSON[i]['key']
                 template +="""' in contextMap.filePath %}
                 """
-                template += """    { "sourceName": "{{ dataMap.thing }}_"""
+                template += """  {{comma()}}  { "sourceName": "{{ dataMap.thing }}_"""
                 template += signalJSON[i]['name']
                 template += """", "time": "{{ (dataMap.time)|int }}",  "value": "{{ value }}"} 
                     {% endif %} """
@@ -120,11 +121,7 @@ def createInputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
             dataJSON['spec']['sourceMappings'].append(y)
             inputDict[entityName+"_"+signalName] = {'eName':entityName,'eID':entityID,'sName':signalName,'sID':signalID}
             
-    template += """
-                    {% if not loop.last %}
-                    ,
-                    {% endif %} 
-                    
+    template += """                    
                     {% endif %} 
                 {% endfor %}  
                 ] """
@@ -168,13 +165,13 @@ def createInputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
     job = json.loads(job)
     for i in range(len(signalJSON)):
 
-        obj = {"name":signalJSON[i]['name'], "valueType": signalJSON[i]['valueType'], "dataPath":"s3://falkonry-dev-backend/tercel/data/"+acccountID+"/"+datastreamID+"/RAWDATA/"+datastreamID+"/signal="+signalJSON[i]['key']+"/"}
+        obj = {"name":signalJSON[i]['name'], "valueType": signalJSON[i]['valueType'], "dataPath":f"s3://{bucket}/tercel/data/"+acccountID+"/"+datastreamID+"/RAWDATA/"+datastreamID+"/signal="+signalJSON[i]['key']+"/"}
         y = json.dumps(obj)
         y = json.loads(y)
         job['spec']['signals'].append(y)
     logging.info("Job Created " + dest)
 
-    parquetFileConnector(acccountID,job,connectionID,auth)
+    parquetFileConnector(acccountID,job,connectionID,urlPrefix, auth)
     shutil.rmtree('workDir')
     connectedSourcesList = []
     for i in range(int(connectedSources[0]['count']/500+1)):
@@ -202,7 +199,7 @@ def createInputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
         
         
         
-def createOutputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
+def createOutputSignalConnection(acccountID, datastreamID, urlPrefix,auth, bucket):
     try:
         os.mkdir('workDir')
     except:
@@ -335,15 +332,15 @@ def createOutputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
                     inputDict[entityName+"-Explanation-"+signalName] = {'eName':entityName,'eID':allEntityList[j]['id'],'sName':signalObjList[l]['name'],'sID':signalObjList[l]['id']}
                     dataJSON['spec']['sourceMappings'].append(y)
                     
-            obj = {"name":"Prediction", "valueType": "categorical", "dataPath":"s3://falkonry-dev-backend/tercel/data/"+acccountID+"/"+datastreamID+"/"+assessmentIdList[i]+"/OUTPUTDATA/"+modelList[a]['id']+'/'}
+            obj = {"name":"Prediction", "valueType": "categorical", "dataPath":f"s3://{bucket}/tercel/data/"+acccountID+"/"+datastreamID+"/"+assessmentIdList[i]+"/OUTPUTDATA/"+modelList[a]['id']+'/'}
             y = json.dumps(obj)
             y = json.loads(y)
             jobN['spec']['signals'].append(y)
-            obj = {"name": "Confidence", "valueType": "Numeric", "dataPath":"s3://falkonry-dev-backend/tercel/data/"+acccountID+"/"+datastreamID+"/"+assessmentIdList[i]+"/CONFIDENCEDATA/"+modelList[a]['id']+'/'}
+            obj = {"name": "Confidence", "valueType": "Numeric", "dataPath":f"s3://{bucket}/tercel/data/"+acccountID+"/"+datastreamID+"/"+assessmentIdList[i]+"/CONFIDENCEDATA/"+modelList[a]['id']+'/'}
             y = json.dumps(obj)
             y = json.loads(y)
             jobN['spec']['signals'].append(y)
-            obj = {"name":"Explanation", "valueType": signalValueType, "dataPath":"s3://falkonry-dev-backend/tercel/data/"+acccountID+"/"+datastreamID+"/"+assessmentIdList[i]+"/EXPLANATIONDATA/"+modelList[a]['id']+'/'}
+            obj = {"name":"Explanation", "valueType": signalValueType, "dataPath":f"s3://{bucket}/tercel/data/"+acccountID+"/"+datastreamID+"/"+assessmentIdList[i]+"/EXPLANATIONDATA/"+modelList[a]['id']+'/'}
             y = json.dumps(obj)
             y = json.loads(y)
             jobN['spec']['signals'].append(y)
@@ -422,18 +419,20 @@ def createOutputSignalConnection(acccountID, datastreamID, urlPrefix,auth):
         
     
             
-def parquetFileConnector(accountID,job,connectionId,auth):
+def parquetFileConnector(accountID,job,connectionId,urlPrefix, auth):
     headers = {'Authorization': auth}
     signalList = job['spec']['signals']
     s3 = boto3.resource('s3')
-    logging.info("Making Event")
-    url = f"{appUrl}accounts/{accountID}/inputcontexts/"
+    logging.info("Making job")
     for i in range(len(signalList)):
+        url = f"{urlPrefix}accounts/{accountID}/inputcontexts"
         o = urlparse(signalList[i]['dataPath'], allow_fragments=False)
         bucket = o.netloc
         key = o.path.lstrip('/') 
         my_bucket = s3.Bucket(bucket)
         #Iterate through all files in given datapath
+        logging.info(f"listing file from {key} bucket={bucket}")
+        input_contexts = []
         for obj in my_bucket.objects.filter(Prefix=key):
             
             file = obj.key  
@@ -448,7 +447,6 @@ def parquetFileConnector(accountID,job,connectionId,auth):
                     "filePath": f"/{bucket}/{file}",
                     "fileSize": s3_object.content_length
                 },
-                "status": "CREATED",
                 "inputContextStats": {
                     "rowsCount": 0,
                     "pointsCount": 0,
@@ -457,21 +455,22 @@ def parquetFileConnector(accountID,job,connectionId,auth):
                     "badPointsCount": 0,
                     "emptyPointsCount": 0
                 },
+                "status" : "UNPROCESSED"
             }
             
             payload = str(payload)
-            response = requests.post(url, headers=headers, data=payload)
-            
-      
-            new_event = {
-            "file_id":response.json()['id'],
-            "bucket": bucket,
-            "object_key":file,
-            "offset": 0,
-            "connection_id": connectionId,
-            "tenant_id":accountID
-            }
-            send_to_sqs(new_event)
+            res = requests.post(url, headers=headers, data=payload)
+            print(res.json())
+            input_contexts.append(res.json()['id'])
+        new_job = {
+            "jobType":"FILEPROCESSOR",
+            "description":f"For connection={connectionId}", 
+            "connection":connectionId,"spec":{"inputContextIds":input_contexts}
+        }
+        print(new_job)
+        url = urlPrefix+"accounts/"+str(accountID)+"/jobs"
+        res = requests.post(url, headers=headers, json=new_job).json()
+        logging.info(res)
 
 def send_to_sqs(event):
     payload = json.dumps(event)
