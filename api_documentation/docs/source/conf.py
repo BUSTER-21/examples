@@ -6,7 +6,7 @@ project = 'Falkonry APIs'
 copyright = '2021, Falkonry'
 author = 'Falkonry'
 
-release = '0.1'
+release = '1.0'
 version = '0.1.0'
 
 # -- General configuration
@@ -33,3 +33,5 @@ html_theme = 'sphinx_rtd_theme'
 
 # -- Options for EPUB output
 epub_show_urls = 'footnote'
+
+html_show_sourcelink = False

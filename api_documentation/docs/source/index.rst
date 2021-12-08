@@ -1,22 +1,15 @@
-Welcome to Lumache's documentation!
-===================================
+Falkonry API Integration
+=========================
 
-**Lumache** (/lu'make/) is a Python library for cooks and food lovers
-that creates recipes mixing random ingredients.
-It pulls data from the `Open Food Facts database <https://world.openfoodfacts.org/>`_
-and offers a *simple* and *intuitive* API.
+This API documentation contains examples on integrating with Falkonry's live API.
 
-Check out the :doc:`usage` section for further information, including
-how to :ref:`installation` the project.
+Complete API documentation can be accessed from here_.
 
-.. note::
+Examples:
 
-   This project is under active development.
+1. Fetch model to make it live
+2. Make a model live
+3. Make entity live
+4. Get live predictions
 
-Contents
---------
-
-.. toctree::
-
-   usage
-   api
+.. _here: https://app3.falkonry.ai/api/1.2/swagger.app
