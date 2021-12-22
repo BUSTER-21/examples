@@ -27,7 +27,7 @@ Examples
 Following are the API examples for a quick integration with Falkonry's output:
 
 .. toctree::
-   :maxdepth: 2
+   :maxdepth: 1
    :glob:
 
    examples/raw_points
