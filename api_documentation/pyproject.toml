@@ -1,8 +1,12 @@
 [build-system]
-requires = ["flit_core >=3.2,<4", "django >=4.0,<5"]
+requires = ["flit_core >=3.2,<4"]
 build-backend = "flit_core.build,api"
 
 [project]
 name = "Falkonry"
 authors = [{name = "Falkonry", email = "info@falkonry.com"}]
 dynamic = ["version", "description"]
+
+dependencies = [
+    "Django==4.0",
+]
