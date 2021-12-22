@@ -14,3 +14,8 @@ Examples:
 
 
 .. _here: https://app3.falkonry.ai/api/1.2/swagger.app
+
+-- toctree::
+   :maxdepth: 1
+   :glob:
+   *
