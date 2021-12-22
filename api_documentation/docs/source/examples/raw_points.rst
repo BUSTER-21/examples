@@ -3,11 +3,11 @@ Get Raw Data
 
 Gets the raw data points for the requested Connected Source or Signal.
 
-:Get Raw Data of Connected Source:
+**Get Raw Data of Connected Source**
 
 .. http:get:: /api/1.2/data/accounts/(string:account_id)/connectedsources/(string:connectedsource_id)/raw_points
 
-  Query Parameters:
+  Query Parameters
   ++++++++++++++++
 
   :?start=:
@@ -26,7 +26,7 @@ Gets the raw data points for the requested Connected Source or Signal.
 
     Order the data points by time (allowed values: True or False)
 
-  ** Example request **:
+  **Example request**
 
   .. tabs::
 
@@ -43,7 +43,7 @@ Gets the raw data points for the requested Connected Source or Signal.
       response = requests.get(URL, headers=HEADERS)
       print(response.json())
 
-  **Example response**:
+  **Example response**
 
   .. sourcecode:: json
 
@@ -64,9 +64,9 @@ Gets the raw data points for the requested Connected Source or Signal.
 
   .. note::
 
-    The :next: field in the response is to indicate that there is more data in the range and the mentioned endpoint can be used to get the following data.
+    The **next** field in the response is to indicate that there is more data in the range and the mentioned endpoint can be used to get the following data.
 
-:Get Raw Data of Signal:
+**Get Raw Data of Signal**
 
 .. http:get:: /api/1.2/data/accounts/(string:account_id)/datastreams/(string:datastream_id)/signals/(string:signal_id)/raw_points
 
@@ -89,7 +89,7 @@ Gets the raw data points for the requested Connected Source or Signal.
 
     Order the data points by time (allowed values: True or False)
 
-  ** Example request **:
+  **Example request**
 
   .. tabs::
 
@@ -106,7 +106,7 @@ Gets the raw data points for the requested Connected Source or Signal.
       response = requests.get(URL, headers=HEADERS)
       print(response.json())
 
-  **Example response**:
+  **Example response**
 
   .. sourcecode:: json
 
@@ -127,4 +127,4 @@ Gets the raw data points for the requested Connected Source or Signal.
 
   .. note::
 
-    The :next: field in the response is to indicate that there is more data in the range and the mentioned endpoint can be used to get the following data.
+    The **next** field in the response is to indicate that there is more data in the range and the mentioned endpoint can be used to get the following data.
