@@ -1,9 +1,5 @@
-from django.utils import timezone
-
 project = 'Falkonry APIs'
-copyright = '2012-{}, Falkonry , Inc'.format(
-    timezone.now().year
-)
+copyright = '2012-2022, Falkonry , Inc'
 author = 'Falkonry'
 
 release = '1.0'
