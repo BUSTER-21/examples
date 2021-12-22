@@ -1,5 +1,9 @@
+from django.utils import timezone
+
 project = 'Falkonry APIs'
-copyright = '2012-2022, Falkonry , Inc'
+copyright = '2012-{}, Falkonry , Inc'.format(
+    timezone.now().year
+)
 author = 'Falkonry'
 
 release = '1.0'
@@ -15,16 +19,14 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
-    'sphinx.sphinxcontrib.httpdomain',
+    'sphinxcontrib.httpdomain',
     'djangodocs',
     'doc_extensions',
     'sphinx_tabs.tabs',
     'sphinx-prompt',
     'notfound.extension',
-    'hoverxref.extension',
     'sphinx_search.extension',
     'sphinxemoji.sphinxemoji',
-    'myst_parser',
 ]
 
 intersphinx_mapping = {
