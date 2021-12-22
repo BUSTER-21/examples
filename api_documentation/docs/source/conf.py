@@ -15,7 +15,7 @@ extensions = [
     'sphinx.ext.autosectionlabel',
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
-    'sphinxcontrib.httpdomain',
+    'sphinx.sphinxcontrib.httpdomain',
     'djangodocs',
     'doc_extensions',
     'sphinx_tabs.tabs',
