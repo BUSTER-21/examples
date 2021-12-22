@@ -21,6 +21,7 @@ extensions = [
     'notfound.extension',
     'sphinx_search.extension',
     'sphinxemoji.sphinxemoji',
+    'sphinx_tabs.tabs',
 ]
 
 intersphinx_mapping = {
