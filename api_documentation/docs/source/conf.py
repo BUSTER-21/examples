@@ -1,6 +1,4 @@
-# Configuration file for the Sphinx documentation builder.
-
-# -- Project information
+from django.utils import timezone
 
 project = 'Falkonry APIs'
 copyright = '2012-{}, Falkonry , Inc'.format(
