@@ -1,12 +1,5 @@
-from django.utils import timezone
-
-import django
-django.setup()
-
 project = 'Falkonry APIs'
-copyright = '2012-{}, Falkonry , Inc'.format(
-    timezone.now().year
-)
+copyright = '2012-22, Falkonry, Inc'
 author = 'Falkonry'
 
 release = '1.0'
@@ -23,7 +16,6 @@ extensions = [
     'sphinx.ext.autodoc',
     'sphinx.ext.intersphinx',
     'sphinxcontrib.httpdomain',
-    'djangodocs',
     'doc_extensions',
     'sphinx_tabs.tabs',
     'sphinx-prompt',
