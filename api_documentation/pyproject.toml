@@ -1,6 +1,6 @@
 [build-system]
-requires = ["flit_core >=3.2,<4"]
-build-backend = "flit_core.buildapi"
+requires = ["flit_core >=3.2,<4", "django >=4.0,<5"]
+build-backend = "flit_core.build,api"
 
 [project]
 name = "Falkonry"
