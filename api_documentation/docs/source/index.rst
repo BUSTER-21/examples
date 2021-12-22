@@ -18,11 +18,11 @@ to authenticate as a user and have the same permissions that the user itself.
 
 .. note::
 
-    You can find your access Token under API Tokens section.
+    You can find your :access token: under API Tokens section.
 
 
-Examples
---------
+API Usage Examples
+------------------
 
 Following are the API examples for a quick integration with Falkonry's output:
 
