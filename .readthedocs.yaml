@@ -20,6 +20,5 @@ formats:
   - pdf
 
 python:
-  version: 3.9
   install:
     - requirements: api_documentation/docs/requirements.txt
