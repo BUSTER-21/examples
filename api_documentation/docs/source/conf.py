@@ -1,5 +1,8 @@
 from django.utils import timezone
 
+import django
+django.setup()
+
 project = 'Falkonry APIs'
 copyright = '2012-{}, Falkonry , Inc'.format(
     timezone.now().year
