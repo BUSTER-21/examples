@@ -18,7 +18,7 @@ to authenticate as a user and have the same permissions that the user itself.
 
 .. note::
 
-    You can find your :access token: under API Tokens section.
+  You can find your :access token: under API Tokens section.
 
 
 API Usage Examples
@@ -27,11 +27,16 @@ API Usage Examples
 Following are the API examples for a quick integration with Falkonry's output:
 
 .. toctree::
-   :maxdepth: 1
-   :glob:
+  :hidden:
 
-   examples/raw_points
-   examples/fetch_model
-   examples/model_live
-   examples/entity_live
-   examples/fetch_output
+   self
+
+.. toctree::
+  :maxdepth: 1
+  :glob:
+
+  examples/raw_points
+  examples/fetch_model
+  examples/model_live
+  examples/entity_live
+  examples/fetch_output
