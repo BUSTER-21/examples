@@ -1,7 +1,7 @@
 Get Live Output Data
 ===========================
 
-The output data is in the form of predictions, episodes, confidence score and explanation score. Each type of output data has its own identity and endpoint. :doc:`Raw points API <examples/raw_points>` can be used to retrieve the output data. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **LiveContext** object.
+The output data is in the form of predictions, episodes, confidence score and explanation score. Each type of output data has its own identity and endpoint. :doc:`Raw points API </examples/raw_points>` can be used to retrieve the output data. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **Live Context** object.
 
 .. http:get:: /api/1.2/accounts/(string:account_id)/livecontexts
 
@@ -10,7 +10,11 @@ The output data is in the form of predictions, episodes, confidence score and ex
 
   :?model=:
 
-    Filter the livecontexts by model. Set this to model id retrieved from the :doc:`Jobs API <examples/fetch_model>`.
+    Filter the Live Contexts by model. Set this to model id retrieved from the :doc:`Jobs API </examples/fetch_model>`.
+
+  :?isCommonModel=:
+
+    Get list of Live Contexts for all the live common models and entities. Set this to true if you do not have a model id.
 
   :?offset=:
 
@@ -26,12 +30,12 @@ The output data is in the form of predictions, episodes, confidence score and ex
 
     .. code-tab:: bash
 
-      $ curl -H "Authorization: Bearer <token>" https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/livecontexts?model=mmmmmmmmmmmmmmm&offset=0&limit=1000
+      $ curl -H "Authorization: Bearer <token>" https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/livecontexts?isCommonModel=true&offset=0&limit=1000
 
     .. code-tab:: python
 
       import requests
-      URL = 'https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/livecontexts?model=mmmmmmmmmmmmmmm&offset=0&limit=1000'
+      URL = 'https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/livecontexts?isCommonModel=true&offset=0&limit=1000'
       TOKEN = '<token>'
       HEADERS = {'Authorization': f'token {TOKEN}'}
       response = requests.get(URL, headers=HEADERS)
@@ -99,11 +103,12 @@ The output data is in the form of predictions, episodes, confidence score and ex
         "createTime": 1643713671812,
         "updateTime": 1643713671812,
         "isCommonModel": true,
-        "stagedDataPath": "s3a://falkonry-dev-workspace/ephemeral/796650829893505024/919887302483791872/FLOWDATA/938027163418734592/SORTEDDATA",
         "links": []
       }
     ]
 
   .. note::
 
-    The API response will have a unique **LiveContext** object for each entity. Use the context id of corresponding output data type within **outputContexts** JSON array to get the output for an entity via :doc:`Raw points API <examples/raw_points>`.
+    The API response will have a unique **Live Context** object for each entity. Use the context id (also referred as Connected Source id) of corresponding output data type within **outputContexts** JSON array to get the output for an entity via :doc:`Raw points API </examples/raw_points>`.
+
+    For example, use **919892128768741376.919887302722867200** as Connected Source id to get predictions data for entity **eeeeeeeeeeee**.
