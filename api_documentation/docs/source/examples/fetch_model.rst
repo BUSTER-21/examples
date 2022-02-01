@@ -1,10 +1,10 @@
 Get Live Models
 ===============================
 
-Gets the live model list. This API can be used to get the id of the desired model.
+Gets the live job list. This API can be used to get the id of the desired live model.
 
 .. note::
-  All the models with **testLive** set as **false** are the common models (i.e. M[0]).
+  Jobs with **testLive** as **false** and **type** as **LIVE** are the live jobs for common model (i.e. M[0]).
 
 .. http:get:: /api/1.2/accounts/(string:account_id)/jobs
 
