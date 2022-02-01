@@ -1,7 +1,7 @@
 Get Live Output Data
 ===========================
 
-The output data is in the form of predictions, episodes, confidence score and explanation score. Each type of output data has its own identity and endpoint. :doc:`Raw points API </examples/raw_points>` can be used to retrieve the output data. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **Live Context** object.
+The output data is in the form of predictions, episodes, confidence score and explanation score. Each type of output data has its own identity and endpoint. :doc:`Signal Data API </examples/raw_points>` can be used to retrieve the output data. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **Live Context** object.
 
 .. http:get:: /api/1.2/accounts/(string:account_id)/livecontexts
 
@@ -109,6 +109,6 @@ The output data is in the form of predictions, episodes, confidence score and ex
 
   .. note::
 
-    The API response will have a unique **Live Context** object for each entity. Use the context id (also referred as Connected Source id) of corresponding output data type within **outputContexts** JSON array to get the output for an entity via :doc:`Raw points API </examples/raw_points>`.
+    The API response will have a unique **Live Context** object for each entity. Use the context id (also referred as Connected Source id) of corresponding output data type within **outputContexts** JSON array to get the output for an entity via :doc:`Signal Data API </examples/raw_points>`.
 
     For example, use **919892128768741376.919887302722867200** as Connected Source id to get predictions data for entity **eeeeeeeeeeee**.
