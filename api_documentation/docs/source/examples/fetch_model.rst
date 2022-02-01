@@ -1,4 +1,4 @@
-Get Model For Live Monitoring
+Get Live Models
 ===============================
 
 Gets the live model list. This API can be used to get the id of the desired model.
