@@ -14,15 +14,15 @@ Token
 ~~~~~
 
 The ``Authorization`` HTTP header can be specified with ``Bearer <your-access-token>``
-to authenticate as a user and have the same permissions that the user itself.
+to authenticate as a user and have the same permissions as the user itself.
 
 .. note::
 
   You can find your :access token: under API Tokens section.
 
 
-API Usage Examples
-------------------
+API Examples
+------------
 
 Following are the API examples for a quick integration with Falkonry's output:
 
@@ -37,6 +37,4 @@ Following are the API examples for a quick integration with Falkonry's output:
 
   examples/raw_points
   examples/fetch_model
-  examples/model_live
-  examples/entity_live
   examples/fetch_output

@@ -12,19 +12,19 @@ Gets the raw data points for the requested Connected Source or Signal.
 
   :?start=:
 
-    Start time of the data in nanoseconds.
+    Start time of the data request range in nanoseconds.
 
   :?end=:
 
-    End time of the data in nanoseconds.
+    End time of the data request range in nanoseconds.
 
   :?limit=:
 
-    Limit the data points in response. Default value is 1000.
+    Limit the data points in response. Default value is **1000**.
 
   :?reverse=:
 
-    Order the data points by time (allowed values: True or False)
+    Set it to **true** to get data in descending order by time. Default value is **false**.
 
   **Example request**
 
@@ -64,7 +64,7 @@ Gets the raw data points for the requested Connected Source or Signal.
 
   .. note::
 
-    The **next** field in the response is to indicate that there is more data in the range and the mentioned endpoint can be used to get the following data.
+    The **next** field in the response is to indicate that there is more data in the requested time range and the corresponding endpoint can be used to get the following data.
 
 **Get Raw Data of Signal**
 
