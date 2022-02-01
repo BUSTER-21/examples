@@ -10,15 +10,15 @@ The output data is in the form of predictions, episodes, confidence score and ex
 
   :?model=:
 
-    Filter the Live Contexts by model. Set this to model id retrieved from the :doc:`Jobs API </examples/fetch_model>`.
+    Filter the Live Contexts by model. Set this to **model id** retrieved from the :doc:`Jobs API </examples/fetch_model>`.
 
   :?isCommonModel=:
 
-    Get list of Live Contexts each corresponding to a live common model (i.e. M[0]) and a live entity. Set this to true if you do not have a specific model id.
+    Get list of Live Contexts each corresponding to a live common model (i.e. M[0]) and a live entity. Set this to **true** if you do not have a specific model id.
 
   :?offset=:
 
-    Index of the first item you want results for. Default value is 0.
+    Index of the first item you want results for. Default value is **0**.
 
   :?limit=:
 

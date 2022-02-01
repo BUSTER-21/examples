@@ -13,15 +13,15 @@ Gets the live job list. This API can be used to get the id of the desired live m
 
   :?type=:
 
-    Filter the jobs by type. Set this to LIVE.
+    Filter the jobs by type. Set this to **LIVE**.
 
   :?status=:
 
-    Filter the jobs by status. Set this to RUNNING.
+    Filter the jobs by status. Set this to **RUNNING**.
 
   :?offset=:
 
-    Index of the first item you want results for. Default value is 0.
+    Index of the first item you want results for. Default value is **0**.
 
   :?limit=:
 
