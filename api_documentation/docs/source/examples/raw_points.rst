@@ -1,7 +1,7 @@
-Get Raw Data
+Get Signal Data
 =============
 
-Gets the raw data points for the requested Connected Source or Signal.
+Gets the data for the requested Connected Source or Signal.
 
 **Get Raw Data of Connected Source**
 
