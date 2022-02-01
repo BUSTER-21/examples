@@ -3,6 +3,9 @@ Get Live Models
 
 Gets the live model list. This API can be used to get the id of the desired model.
 
+.. note::
+  All the models with **testLive** set as **false** are the common models (i.e. M[0]).
+
 .. http:get:: /api/1.2/accounts/(string:account_id)/jobs
 
   Query Parameters
@@ -94,7 +97,7 @@ Gets the live model list. This API can be used to get the id of the desired mode
         "updateTime": 1617552949478,
         "createdBy": "740153935079641088",
         "updatedBy": "740153935079641088",
-        "archived": false,
+        "testLive": true,
         "messages": [],
         "currentState": {},
         "transitions": [],

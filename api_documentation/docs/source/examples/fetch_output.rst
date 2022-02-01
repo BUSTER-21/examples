@@ -14,7 +14,7 @@ The output data is in the form of predictions, episodes, confidence score and ex
 
   :?isCommonModel=:
 
-    Get list of Live Contexts each corresponding to a live common model (M[0]) and a live entity. Set this to true if you do not have a specific model id.
+    Get list of Live Contexts each corresponding to a live common model (i.e. M[0]) and a live entity. Set this to true if you do not have a specific model id.
 
   :?offset=:
 
