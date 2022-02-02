@@ -1,10 +1,10 @@
 Get Live Models
 ===============================
 
-Gets the live job list. This API can be used to get the id of the desired live model.
+Gets the Live Job list. This API can be used to get the id of the desired Live Model.
 
 .. note::
-  Jobs with **testLive** as **false** and **type** as **LIVE** are the live jobs for common model (i.e. M[0]).
+  Jobs with **testLive** as **false** and **type** as **LIVE** are the Live Jobs for Common Model (i.e. M[0]).
 
 .. http:get:: /api/1.2/accounts/(string:account_id)/jobs
 
@@ -13,11 +13,11 @@ Gets the live job list. This API can be used to get the id of the desired live m
 
   :?type=:
 
-    Filter the jobs by type. Set this to **LIVE**.
+    Filter the Jobs by type. Set this to **LIVE**.
 
   :?status=:
 
-    Filter the jobs by status. Set this to **RUNNING**.
+    Filter the Jobs by status. Set this to **RUNNING**.
 
   :?offset=:
 
@@ -26,6 +26,10 @@ Gets the live job list. This API can be used to get the id of the desired live m
   :?limit=:
 
     Number of items you want to include in each page result. There could be fewer items remaining than the specified value.
+
+  :?sort=:
+
+    Sort the items by time. Set this to **-createTime** to get latest item first.
 
   **Example request**
 

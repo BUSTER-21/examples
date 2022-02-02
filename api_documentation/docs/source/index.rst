@@ -8,7 +8,7 @@ Note: You can view the swagger styled API documentation `here <https://app3.falk
 Authentication and authorization
 --------------------------------
 
-All the requests to the Falkonry APIs require authentication.
+All the requests to the Falkonry APIs require authentication and are secured by token based authentication.
 
 Token
 ~~~~~
@@ -38,3 +38,4 @@ Following are the API examples for a quick integration with Falkonry's output:
   examples/raw_points
   examples/fetch_model
   examples/fetch_output
+  examples/fetch_episode

@@ -1,7 +1,12 @@
 Get Live Output Data
 ===========================
 
-The output data is in the form of predictions, episodes, confidence score and explanation score. Each type of output data has its own identity and endpoint. :doc:`Signal Data API </examples/raw_points>` can be used to retrieve the output data. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **Live Context** object.
+The output data is in the form of Predictions, Episodes, Confidence Score and Explanation Score. Each type of output data has its own identity and endpoint. :doc:`Signal Data API </examples/raw_points>` can be used to retrieve the output data. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **Live Context** object.
+
+.. note::
+
+  Refer :doc:`Episodes API </examples/fetch_episode>` section, to get the Episode data.
+
 
 .. http:get:: /api/1.2/accounts/(string:account_id)/livecontexts
 
@@ -23,6 +28,10 @@ The output data is in the form of predictions, episodes, confidence score and ex
   :?limit=:
 
     Number of items you want to include in each page result. There could be fewer items remaining than the specified value.
+
+  :?sort=:
+
+    Sort the items by time. Set this to **-createTime** to get latest item first.
 
   **Example request**
 
