@@ -42,11 +42,11 @@ Gets the Episodes created by the live jobs. This API can be used to get all Epis
 
   :?sort=:
 
-    Sort the items by time. Set this to **-createTime** to get latest item first.
+    Sort the items by time. Set this to **-createTime** to get the latest item first.
 
   :?denorm=:
 
-    Expand the details for allowed properties. Set this to **predictedCondition** to get the Condition label. Allowed values are { entity, predictedCondition, model and latestDispositionCondition }.
+    Expand the details of the allowed properties. Set this to **predictedCondition** to get the Condition label. Allowed properties are: entity, predictedCondition, model and latestDispositionCondition.
 
   **Example request**
 
@@ -126,7 +126,7 @@ Gets the Episodes created by the live jobs. This API can be used to get all Epis
         "model": "mmmmmmmmmmmmmmm",
         "episodeEvaluation": "915926754674286592",
         "learningEvaluation": "854011558875795456",
-        "description": "Episode created from event.value=evalrange, event.id=854007453365211136",
+        "description": "Episode created from event.value=warning, event.id=854007453365211136",
         "tags": [],
         "createTime": 1638437988268,
         "updateTime": 1638444560476,
@@ -157,4 +157,4 @@ Gets the Episodes created by the live jobs. This API can be used to get all Epis
 
   .. note::
 
-    To paginate through results, begin with a offset value of 0 and a limit value of N. To get the next page, set offset value to N, while the limit value stays the same. Subsequent pages start at 2N, 3N, 4N, and so on.
+    To paginate through results, begin with an offset value of 0 and a limit value of N. To get the next page, set offset value to N, while the limit value stays the same. Subsequent pages start at 2N, 3N, 4N, and so on.

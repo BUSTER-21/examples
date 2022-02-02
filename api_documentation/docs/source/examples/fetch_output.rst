@@ -1,7 +1,7 @@
 Get Live Output Data
 ===========================
 
-The output data is in the form of Predictions, Episodes, Confidence Score and Explanation Score. Each type of output data has its own identity and endpoint. :doc:`Signal Data API </examples/raw_points>` can be used to retrieve the output data. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **Live Context** object.
+The output data is in the form of Predictions, Episodes, Confidence Score and Explanation Score. Each type of output data has its own identity and endpoint. :doc:`Signal Data API </examples/raw_points>` can be used to retrieve the data for Predictions, Confidence Score and Explanation Score. Each output data type is referenced as Connected Source with an unique identity for each entity. This Connected Source ID can be found in **Live Context** object.
 
 .. note::
 
@@ -15,11 +15,11 @@ The output data is in the form of Predictions, Episodes, Confidence Score and Ex
 
   :?model=:
 
-    Filter the Live Contexts by model. Set this to **model id** retrieved from the :doc:`Jobs API </examples/fetch_model>`.
+    Filter the Live Contexts by model. Set this to **Model ID** retrieved from the :doc:`Jobs API </examples/fetch_model>`.
 
   :?isCommonModel=:
 
-    Get list of Live Contexts each corresponding to a live common model (i.e. M[0]) and a live entity. Set this to **true** if you do not have a specific model id.
+    Get list of Live Contexts each corresponding to a Live Common Model (i.e. M[0]) and a live entity. Set this to **true** if you do not have a specific Model ID.
 
   :?offset=:
 
@@ -118,6 +118,8 @@ The output data is in the form of Predictions, Episodes, Confidence Score and Ex
 
   .. note::
 
+    To paginate through results, begin with an offset value of 0 and a limit value of N. To get the next page, set offset value to N, while the limit value stays the same. Subsequent pages start at 2N, 3N, 4N, and so on.
+
     The API response will have a unique **Live Context** object for each entity. Use the context id (also referred as Connected Source id) of corresponding output data type within **outputContexts** JSON array to get the output for an entity via :doc:`Signal Data API </examples/raw_points>`.
 
-    For example, use **919892128768741376.919887302722867200** as Connected Source id to get predictions data for entity **eeeeeeeeeeee**.
+    For example, use **919892128768741376.919887302722867200** as Connected Source ID to get Predictions data for entity **eeeeeeeeeeee**.

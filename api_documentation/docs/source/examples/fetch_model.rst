@@ -111,4 +111,4 @@ Gets the Live Job list. This API can be used to get the id of the desired Live M
 
   .. note::
 
-    To paginate through results, begin with a offset value of 0 and a limit value of N. To get the next page, set offset value to N, while the limit value stays the same. Subsequent pages start at 2N, 3N, 4N, and so on.
+    To paginate through results, begin with an offset value of 0 and a limit value of N. To get the next page, set offset value to N, while the limit value stays the same. Subsequent pages start at 2N, 3N, 4N, and so on.
