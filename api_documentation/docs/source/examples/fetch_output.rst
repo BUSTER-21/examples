@@ -118,8 +118,8 @@ The output data is in the form of Predictions, Episodes, Confidence Score and Ex
 
   .. note::
 
-    To paginate through results, begin with an offset value of 0 and a limit value of N. To get the next page, set offset value to N, while the limit value stays the same. Subsequent pages start at 2N, 3N, 4N, and so on.
+    To paginate through results, begin with an offset value of 0 and a limit value of N. To get the next page, set the offset value to N, while the limit value stays the same. Subsequent pages start at 2N, 3N, 4N, and so on.
 
-    The API response will have a unique **Live Context** object for each entity. Use the context id (also referred as Connected Source id) of corresponding output data type within **outputContexts** JSON array to get the output for an entity via :doc:`Signal Data API </examples/raw_points>`.
+    The API response will have a unique **Live Context** object for each entity. Use the context id (also referred to as Connected Source id) of corresponding output data type within the **outputContexts** JSON array to get the output for an entity via :doc:`Signal Data API </examples/raw_points>`.
 
     For example, use **919892128768741376.919887302722867200** as Connected Source ID to get Predictions data for entity **eeeeeeeeeeee**.
