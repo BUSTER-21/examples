@@ -54,12 +54,12 @@ Gets the Episodes created by the live jobs. This API can be used to get all Epis
 
     .. code-tab:: bash
 
-      $ curl -H "Authorization: Bearer <token>" https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/episodes?episodeType=NOVEL&episodeStatus=OPEN&isFinalized=true&offset=0&limit=1000&sort=-createTime&denorm=predictedCondition
+      $ curl -H "Authorization: Bearer <token>" https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/episodes?episodeType=NOVEL&episodeStatus=OPEN&isFinalized=true&offset=0&limit=1000&sort=-createTime&denorm=predictedCondition&denorm=entity
 
     .. code-tab:: python
 
       import requests
-      URL = 'https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/episodes?episodeType=NOVEL&episodeStatus=OPEN&isFinalized=true&offset=0&limit=1000&sort=-createTime&denorm=predictedCondition'
+      URL = 'https://app3.falkonry.ai/api/1.2/accounts/xxxxxxxxxxxxxxx/episodes?episodeType=NOVEL&episodeStatus=OPEN&isFinalized=true&offset=0&limit=1000&sort=-createTime&denorm=predictedCondition&denorm=entity'
       TOKEN = '<token>'
       HEADERS = {'Authorization': f'token {TOKEN}'}
       response = requests.get(URL, headers=HEADERS)
@@ -91,6 +91,27 @@ Gets the Episodes created by the live jobs. This API can be used to get all Epis
         "updateTime": 1642762091361,
         "isFinalized": true,
         "links": [
+          {
+            "name": "entity",
+            "key": "938707076613337088",
+            "url": "/api/1.2/accounts/xxxxxxxxxxxxxxx/datastreams/yyyyyyyyyyyy/entities/eeeeeeeeeeee",
+            "type": "entities.entity",
+            "ref": "entity",
+            "object": {
+              "name": "machine1",
+              "stats": {
+                "events": 150000,
+                "earliestDataPoint": "2016-02-17T10:30:00.000000Z",
+                "latestDataPoint": "2016-03-28T10:28:50.880000Z",
+                "dataSize": 1489569
+              },
+              "tenant": "xxxxxxxxxxxxxxx",
+              "createTime": 1612435212097,
+              "id": "eeeeeeeeeeee",
+              "datastream": "yyyyyyyyyyyy",
+              "updateTime": 1642762091366
+            }
+          },
           {
             "name": "predictedCondition",
             "key": "938382022781591552",
@@ -132,6 +153,27 @@ Gets the Episodes created by the live jobs. This API can be used to get all Epis
         "updateTime": 1638444560476,
         "isFinalized": true,
         "links": [
+          {
+            "name": "entity",
+            "key": "938707076613337088",
+            "url": "/api/1.2/accounts/xxxxxxxxxxxxxxx/datastreams/yyyyyyyyyyyy/entities/eeeeeeeeeeee",
+            "type": "entities.entity",
+            "ref": "entity",
+            "object": {
+              "name": "machine1",
+              "stats": {
+                "events": 150000,
+                "earliestDataPoint": "2016-02-17T10:30:00.000000Z",
+                "latestDataPoint": "2016-03-28T10:28:50.880000Z",
+                "dataSize": 1489569
+              },
+              "tenant": "xxxxxxxxxxxxxxx",
+              "createTime": 1612435212097,
+              "id": "eeeeeeeeeeee",
+              "datastream": "yyyyyyyyyyyy",
+              "updateTime": 1642762091366
+            }
+          },
           {
             "name": "predictedCondition",
             "key": "938382022789980160",
