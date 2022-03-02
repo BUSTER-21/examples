@@ -1,0 +1,258 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Connector Name": {
+      "defaultValue": "falkonry",
+      "maxLength": 16,
+      "type": "String",
+      "metadata": {
+        "description": "This name must be globally unique. It will be used for naming various resources deployed through this template. Use alphanumerics and hyphens only."
+      }
+    },
+    "Function Zip URL": {
+      "type": "String",
+      "metadata": {
+        "description": "The URL on which the function code and files are hosted"
+      }
+    },
+    "API Gateway URL": {
+      "type": "String",
+      "metadata": {
+        "description": "The AWS API Gateway URL on which data will be sent"
+      }
+    },
+    "Account ID": {
+      "type": "String",
+      "defaultValue": "account_id",
+      "metadata": {
+        "description": "The Falkonry account id"
+      }
+    },
+    "Connection ID": {
+      "type": "String",
+      "defaultValue": "connection_id",
+      "metadata": {
+        "description": "The connection id on which data will be sent"
+      }
+    }
+  },
+  "variables": {
+    "functionAppName": "[parameters('Connector name')]",
+    "hostingPlanName": "[concat(parameters('Connector name'), '-hosting-plan')]",
+    "storageAccountName": "[concat(toLower(replace(parameters('Connector Name'), '-', '')), 'storage')]",
+    "datalakeName": "[concat(toLower(replace(parameters('Connector Name'), '-', '')), 'datalake')]",
+    "applicationInsightsName": "[concat(parameters('Connector name'),'-app-insights')]",
+    "streamAnalyticsName": "[concat(parameters('Connector Name'), '-stream-analytics')]",
+    "sku": "Standard_LRS",
+    "datalakeSKU": "Standard_RAGRS",
+    "datalakeContainer": "falkonry",
+    "asaQuery": "[concat('SELECT ''', parameters('Account ID'), ''' as tenant, ''', parameters('Connection ID'), ''' as connection, inputeventhub as message INTO falkonry FROM inputeventhub')]"
+  },
+  "resources": [
+    {
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('storageAccountName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "[variables('sku')]"
+      },
+      "properties": {
+        "minimumTlsVersion": "TLS1_0"
+      },
+      "kind": "StorageV2"
+    },
+    {
+      "name": "[variables('datalakeName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accessTier": "Hot",
+        "minimumTlsVersion": "TLS1_2",
+        "supportsHttpsTrafficOnly": true,
+        "allowBlobPublicAccess": true,
+        "allowSharedKeyAccess": true,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow",
+          "ipRules": []
+        },
+        "isHnsEnabled": true
+      },
+      "sku": {
+        "name": "[variables('datalakeSKU')]"
+      },
+      "kind": "StorageV2",
+      "resources": [
+         {
+          "type": "blobServices/containers",
+          "apiVersion": "2019-06-01",
+          "name": "[concat('default/', variables('datalakeContainer'))]",
+          "dependsOn": [
+            "[variables('datalakeName')]"
+          ]
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Web/serverfarms",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('hostingPlanName')]",
+      "location": "[resourceGroup().location]",
+      "sku": {
+        "name": "Y1",
+        "tier": "Dynamic"
+      },
+      "properties": {
+        "name": "[variables('hostingPlanName')]",
+        "computeMode": "Dynamic"
+      }
+    },
+    {
+      "type": "Microsoft.Web/sites",
+      "apiVersion": "2020-06-01",
+      "name": "[variables('functionAppName')]",
+      "location": "[resourceGroup().location]",
+      "kind": "functionapp",
+      "dependsOn": [
+        "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+        "[resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName'))]",
+        "[resourceId('Microsoft.Insights/components', variables('applicationInsightsName'))]"
+      ],
+      "properties": {
+        "name": "[variables('functionAppName')]",
+        "serverFarmId": "[resourceId('Microsoft.Web/serverfarms', variables('hostingPlanName'))]",
+        "siteConfig": {
+          "appSettings": [
+            {
+              "name": "falkonry_aws_api_gateway_url",
+              "value": "[parameters('API Gateway URL')]"
+            },
+            {
+              "name": "falkonry_aws_api_gateway_cert",
+              "value": "cert.pem"
+            },
+            {
+              "name": "falkonry_account_id",
+              "value": "[parameters('Account ID')]"
+            },
+            {
+              "name": "falkonry_connection_id",
+              "value": "[parameters('Connection ID')]"
+            },
+            {
+              "name": "AzureWebJobsStorage",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTAZUREFILECONNECTIONSTRING",
+              "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('storageAccountName'), ';EndpointSuffix=', environment().suffixes.storage, ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('storageAccountName')), '2019-06-01').keys[0].value)]"
+            },
+            {
+              "name": "WEBSITE_CONTENTSHARE",
+              "value": "[toLower(variables('functionAppName'))]"
+            },
+            {
+              "name": "FUNCTIONS_EXTENSION_VERSION",
+              "value": "~2"
+            },
+            {
+              "name": "WEBSITE_NODE_DEFAULT_VERSION",
+              "value": "~10"
+            },
+            {
+              "name": "APPINSIGHTS_INSTRUMENTATIONKEY",
+              "value": "[reference(resourceId('microsoft.insights/components', variables('applicationInsightsName')), '2020-02-02-preview').InstrumentationKey]"
+            },
+            {
+              "name": "FUNCTIONS_WORKER_RUNTIME",
+              "value": "node"
+            }
+          ]
+        }
+      },
+      "resources": [
+        {
+          "name": "MSDeploy",
+          "type": "Extensions",
+          "apiVersion": "2015-02-01",
+          "dependsOn": [
+            "[resourceId('Microsoft.Web/sites', variables('functionAppName'))]"
+          ],
+          "properties": {
+            "packageUri": "[parameters('Function Zip URL')]"
+          }
+        }
+      ]
+    },
+    {
+      "type": "Microsoft.Insights/Components",
+      "apiVersion": "2020-02-02-preview",
+      "name": "[variables('applicationInsightsName')]",
+      "kind": "web",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "Application_Type": "web",
+        "ApplicationId": "[variables('applicationInsightsName')]"
+      }
+    },
+    {
+      "type": "Microsoft.StreamAnalytics/streamingjobs",
+      "apiVersion": "2019-06-01",
+      "name": "[variables('streamAnalyticsName')]",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "sku": {
+          "name": "Standard"
+        },
+        "eventsOutOfOrderPolicy": "adjust",
+        "outputErrorPolicy": "stop",
+        "eventsOutOfOrderMaxDelayInSeconds": 0,
+        "eventsLateArrivalMaxDelayInSeconds": 5,
+        "dataLocale": "en-US",
+        "jobType": "Cloud",
+        "transformation": {
+          "name": "Transformation",
+          "properties": {
+            "query": "[variables('asaQuery')]"
+          }
+        }
+      }
+    },
+    {
+      "type": "Microsoft.StreamAnalytics/streamingjobs/outputs",
+      "apiVersion": "2019-06-01",
+      "name": "[concat(variables('streamAnalyticsName'), '/', 'falkonry')]",
+      "dependsOn": [
+        "[resourceId('Microsoft.StreamAnalytics/streamingjobs', variables('streamAnalyticsName'))]",
+        "[resourceId('Microsoft.Web/sites/', variables('functionAppName'))]"
+      ],
+      "properties": {
+        "datasource": {
+          "type": "Microsoft.AzureFunction",
+          "properties": {
+            "functionAppName": "[variables('functionAppName')]",
+            "functionName": "streamanalytics",
+            "apiKey": "[listkeys(concat(concat(resourceGroup().id,'/providers/Microsoft.Web/sites/', variables('functionAppName')), '/host/default/'),'2016-08-01').masterKey]"
+          }
+        }
+      }
+    }
+  ],
+  "outputs": {
+    "Datalake URL": {
+      "type": "string",
+      "value": "[concat('https://', variables('datalakeName'), '.dfs.', environment().suffixes.storage)]"
+    },
+    "Datalake Connection String": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('datalakeName'), ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('datalakeName')), '2021-02-01').keys[0].value, ';EndpointSuffix=', environment().suffixes.storage)]"
+    },
+    "Container Path": {
+      "type": "string",
+      "value": "[concat('abfs://', variables('datalakeContainer'), '@', variables('datalakeName'), '.dfs.', environment().suffixes.storage)]"
+    }
+  }
+}
