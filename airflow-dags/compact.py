@@ -10,8 +10,8 @@ default_args = {
     'start_date': datetime.utcnow()
 }
 
-with DAG(
-        'compact-01', default_args=default_args, schedule_interval=None) as dag:
+with DAG('compact-01', default_args=default_args, schedule_interval=None,
+         max_active_tasks=30, max_active_runs=30) as dag:
     load_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
     node_selector = {"loader-node": "true"}
     image_pull_secrets = [k8s.V1LocalObjectReference('falkonry-pull-secret')]
