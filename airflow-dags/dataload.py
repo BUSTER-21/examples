@@ -59,7 +59,7 @@ with DAG(
         resources=load_resources,
         node_selector=node_selector,
         env_vars=envs,
-        image_pull_policy="always",
+        image_pull_policy="Always",
         cmds=[
             "/bin/bash",
             "-c",
@@ -84,7 +84,7 @@ with DAG(
         resources=load_resources,
         node_selector=node_selector,
         env_vars=envs,
-        image_pull_policy="always",
+        image_pull_policy="Always",
         cmds=[
             "/bin/bash",
             "-c",
