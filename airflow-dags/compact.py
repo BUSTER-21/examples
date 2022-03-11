@@ -65,6 +65,7 @@ with DAG(
         node_selector=node_selector,
         env_vars=envs,
         image_pull_policy="Always",
+        startup_timeout_seconds=60*30,
         cmds=[
             "/bin/bash",
             "-c",
