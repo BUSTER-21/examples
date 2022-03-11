@@ -63,7 +63,7 @@ with DAG(
         cmds=[
             "/bin/bash",
             "-c",
-            "/jobs/buildtiles/Run.sh s3://falkonry-xfer/ternium/loading/enro/load/spec-00.json"
+            f"/jobs/buildtiles/Run.sh {load_file}"
         ],
         labels={"purpose": "dataload", "process": "split"},
         name="dataload-split",
@@ -88,7 +88,7 @@ with DAG(
         cmds=[
             "/bin/bash",
             "-c",
-            f"/jobs/buildtiles/Run.sh ${compact_file}"
+            f"/jobs/buildtiles/Run.sh {compact_file}"
         ],
         labels={"purpose": "dataload", "process": "compact"},
         name="dataload-compact",
