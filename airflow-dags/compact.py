@@ -74,7 +74,7 @@ with DAG('compact-01', default_args=default_args, schedule_interval=None,
         labels={"purpose": "dataload", "process": "compact"},
         name="dataload-compact",
         task_id="dataload-compact",
-        get_logs=False,
+        get_logs=True,
         dag=dag
     )
     compact
