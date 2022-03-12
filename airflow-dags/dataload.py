@@ -10,8 +10,8 @@ default_args = {
     'start_date': datetime.utcnow()
 }
 
-with DAG(
-        'dataload-01', default_args=default_args, schedule_interval=None) as dag:
+with DAG('dataload-01', default_args=default_args, schedule_interval=None,
+         max_active_tasks=40, max_active_runs=40) as dag:
     load_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
     node_selector = {"loader-node": "true"}
     image_pull_secrets = [k8s.V1LocalObjectReference('falkonry-pull-secret')]
@@ -72,18 +72,19 @@ with DAG(
         dag=dag
     )
 
-    envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
-    envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="50"))
-    envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
+    compact_envs = envs.copy()
+    compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
+    compact_envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="50"))
+    compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
     compact_resources = V1ResourceRequirements(requests={"memory": "10Gi"}, limits={"memory": "10Gi"})
 
     compact = KubernetesPodOperator(
         namespace='falkonry',
         image="quay.io/falkonry/tiling:issue-8936-5.latest",
         image_pull_secrets=image_pull_secrets,
-        resources=load_resources,
+        resources=compact_resources,
         node_selector=node_selector,
-        env_vars=envs,
+        env_vars=compact_envs,
         image_pull_policy="Always",
         cmds=[
             "/bin/bash",
