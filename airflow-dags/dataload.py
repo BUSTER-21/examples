@@ -68,7 +68,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         labels={"purpose": "dataload", "process": "split"},
         name="dataload-split",
         task_id="dataload-split",
-        get_logs=True,
+        get_logs=False,
         dag=dag
     )
 
