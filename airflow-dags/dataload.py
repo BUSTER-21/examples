@@ -76,7 +76,8 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
     compact_envs = envs.copy()
     compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
     compact_envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="50"))
-    compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
+    compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_tile_metadata_db", value="remote"))
+    #compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
     compact_resources = V1ResourceRequirements(requests={"memory": "10Gi"}, limits={"memory": "10Gi"})
 
     compact = KubernetesPodOperator(
@@ -96,7 +97,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         labels={"purpose": "dataload", "process": "compact"},
         name="dataload-compact",
         task_id="dataload-compact",
-        get_logs=True,
+        get_logs=False,
         dag=dag
     )
     compact.set_upstream(data_load)
