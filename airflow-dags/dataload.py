@@ -45,7 +45,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         "falkonry_clue_livestream_aws_dynamodb_context_source_tablename": "H8W8864TVLFOSQ1V-master-ContextMetadata",
         "falkonry_clue_livestream_aws_dynamodb_tilemetadata_tablename": "H8W8864TVLFOSQ1V-master-TileMetadata-v01-01",
         "falkonry_clue_livestream_non_cloud": "true",
-        "falkonry_tiling_bulk_concurrency": "20",
+        "falkonry_tiling_bulk_concurrency": "10",
         "falkonry_tiling_bulk_file_concurrency": "10",
         "AIOCACHE_DISABLE": "1"
     }
