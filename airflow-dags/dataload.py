@@ -100,4 +100,4 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         get_logs=False,
         dag=dag
     )
-    compact.set_upstream(data_load)
+    compact#.set_upstream(data_load)
