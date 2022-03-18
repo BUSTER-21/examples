@@ -52,26 +52,26 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
     for k, v in env_dict.items():
         envs.append(k8s.V1EnvVar(name=k, value=v))
 
-    data_load = KubernetesPodOperator(
-        namespace='falkonry',
-        image="quay.io/falkonry/tiling:issue-8936-5.latest",
-        image_pull_secrets=image_pull_secrets,
-        resources=load_resources,
-        node_selector=node_selector,
-        env_vars=envs,
-        image_pull_policy="Always",
-        startup_timeout_seconds=60 * 30,
-        cmds=[
-            "/bin/bash",
-            "-c",
-            f"/jobs/buildtiles/Run.sh {load_file}"
-        ],
-        labels={"purpose": "dataload", "process": "split"},
-        name="dataload-split",
-        task_id="dataload-split",
-        get_logs=False,
-        dag=dag
-    )
+#     data_load = KubernetesPodOperator(
+#         namespace='falkonry',
+#         image="quay.io/falkonry/tiling:issue-8936-5.latest",
+#         image_pull_secrets=image_pull_secrets,
+#         resources=load_resources,
+#         node_selector=node_selector,
+#         env_vars=envs,
+#         image_pull_policy="Always",
+#         startup_timeout_seconds=60 * 30,
+#         cmds=[
+#             "/bin/bash",
+#             "-c",
+#             f"/jobs/buildtiles/Run.sh {load_file}"
+#         ],
+#         labels={"purpose": "dataload", "process": "split"},
+#         name="dataload-split",
+#         task_id="dataload-split",
+#         get_logs=False,
+#         dag=dag
+#     )
 
     compact_envs = envs.copy()
     compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
@@ -97,7 +97,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         labels={"purpose": "dataload", "process": "compact"},
         name="dataload-compact",
         task_id="dataload-compact",
-        get_logs=False,
+        get_logs=True,
         dag=dag
     )
     compact#.set_upstream(data_load)
