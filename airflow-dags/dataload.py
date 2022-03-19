@@ -98,7 +98,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         name="dataload-compact",
         task_id="dataload-compact",
         get_logs=False,
-        is_delete_operator_pod=False,
+        is_delete_operator_pod=True,
         dag=dag
     )
     compact.set_upstream(data_load)
