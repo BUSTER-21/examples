@@ -68,8 +68,8 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
             f"/jobs/buildtiles/Run.sh {load_file}"
         ],
         labels={"purpose": "dataload", "process": "split"},
-        name=f"split-{task_id}",
-        task_id=f"split-{task_id}",
+        name=f"split",
+        task_id=f"split",
         get_logs=False,
         dag=dag
     )
@@ -96,8 +96,8 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
             f"/jobs/buildtiles/Run.sh {compact_file}"
         ],
         labels={"purpose": "dataload", "process": "compact"},
-        name=f"compact-{task_id}",
-        task_id=f"compact-{task_id}",
+        name=f"compact",
+        task_id=f"compact",
         get_logs=False,
         is_delete_operator_pod=True,
         dag=dag
