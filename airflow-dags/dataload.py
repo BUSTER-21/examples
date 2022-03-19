@@ -19,6 +19,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
     envs = list()
     load_file = "{{ dag_run.conf['load_file'] }}"
     compact_file = "{{ dag_run.conf['compact_file'] }}"
+    task_id = "{{ dag_run.conf['task_id'] }}"
 
     envs.append(k8s.V1EnvVar(name="AWS_SECRET_ACCESS_KEY",
                              value_from=k8s.V1EnvVarSource(
@@ -67,8 +68,8 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
             f"/jobs/buildtiles/Run.sh {load_file}"
         ],
         labels={"purpose": "dataload", "process": "split"},
-        name="dataload-split",
-        task_id="dataload-split",
+        name=f"split-{task_id}",
+        task_id=f"split-{task_id}",
         get_logs=False,
         dag=dag
     )
@@ -95,8 +96,8 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
             f"/jobs/buildtiles/Run.sh {compact_file}"
         ],
         labels={"purpose": "dataload", "process": "compact"},
-        name="dataload-compact",
-        task_id="dataload-compact",
+        name=f"compact-{task_id}",
+        task_id=f"compact-{task_id}",
         get_logs=False,
         is_delete_operator_pod=True,
         dag=dag
