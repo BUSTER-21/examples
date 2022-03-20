@@ -48,6 +48,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         "falkonry_clue_livestream_non_cloud": "true",
         "falkonry_tiling_bulk_concurrency": "10",
         "falkonry_tiling_bulk_file_concurrency": "10",
+        "falkonry_tiling_bulk_db_concurrency": 25,        
         "AIOCACHE_DISABLE": "1"
     }
     for k, v in env_dict.items():
