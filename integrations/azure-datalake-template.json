@@ -1,0 +1,69 @@
+{
+  "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentTemplate.json#",
+  "contentVersion": "1.0.0.0",
+  "parameters": {
+    "Data Lake Name": {
+      "defaultValue": "falkonrydatalake",
+      "maxLength": 16,
+      "type": "String",
+      "metadata": {
+        "description": "This name must be globally unique. It will be used for naming the data lake deployed through this template. Use alphanumerics and hyphens only."
+      }
+    }
+  },
+  "variables": {
+    "sku": "Standard_LRS",
+    "datalakeSKU": "Standard_RAGRS",
+    "datalakeContainer": "falkonry",
+    "datalakeName": "[parameters('Data Lake Name')]"
+  },
+  "resources": [
+    {
+      "name": "[variables('datalakeName')]",
+      "type": "Microsoft.Storage/storageAccounts",
+      "apiVersion": "2021-02-01",
+      "location": "[resourceGroup().location]",
+      "properties": {
+        "accessTier": "Hot",
+        "minimumTlsVersion": "TLS1_2",
+        "supportsHttpsTrafficOnly": true,
+        "allowBlobPublicAccess": true,
+        "allowSharedKeyAccess": true,
+        "networkAcls": {
+          "bypass": "AzureServices",
+          "defaultAction": "Allow",
+          "ipRules": []
+        },
+        "isHnsEnabled": true
+      },
+      "sku": {
+        "name": "[variables('datalakeSKU')]"
+      },
+      "kind": "StorageV2",
+      "resources": [
+         {
+          "type": "blobServices/containers",
+          "apiVersion": "2019-06-01",
+          "name": "[concat('default/', variables('datalakeContainer'))]",
+          "dependsOn": [
+            "[variables('datalakeName')]"
+          ]
+        }
+      ]
+    }
+  ],
+  "outputs": {
+    "Datalake URL": {
+      "type": "string",
+      "value": "[concat('https://', variables('datalakeName'), '.dfs.', environment().suffixes.storage)]"
+    },
+    "Datalake Connection String": {
+      "type": "string",
+      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('datalakeName'), ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('datalakeName')), '2021-02-01').keys[0].value, ';EndpointSuffix=', environment().suffixes.storage)]"
+    },
+    "Container Path": {
+      "type": "string",
+      "value": "[concat('abfs://', variables('datalakeContainer'), '@', variables('datalakeName'), '.dfs.', environment().suffixes.storage)]"
+    }
+  }
+}
