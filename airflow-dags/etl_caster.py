@@ -10,7 +10,7 @@ default_args = {
     'start_date': datetime.utcnow()
 }
 
-with DAG('dataload-01', default_args=default_args, schedule_interval=None,
+with DAG('etl_caster01', default_args=default_args, schedule_interval=None,
          max_active_tasks=40, max_active_runs=40) as dag:
     load_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
     node_selector = {"loader-node": "true"}
