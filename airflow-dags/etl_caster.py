@@ -79,7 +79,7 @@ with DAG('etl_caster01', default_args=default_args, schedule_interval=None,
     compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
     compact_envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="25"))
     compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_tile_metadata_db", value="remote"))
-    #compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
+    compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
     compact_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
 
     compact = KubernetesPodOperator(
