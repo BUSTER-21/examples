@@ -46,6 +46,8 @@ html_theme_options = {
     'prev_next_buttons_location': None,
 }
 
+html_favicon = '../img/favicon.ico'
+
 epub_show_urls = 'footnote'
 
 html_show_sourcelink = False
