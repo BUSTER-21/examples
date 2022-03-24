@@ -100,7 +100,7 @@ with DAG('etl_caster01', default_args=default_args, schedule_interval=None,
         name=f"compact",
         task_id=f"compact",
         get_logs=False,
-        is_delete_operator_pod=True,
+        is_delete_operator_pod=False,
         dag=dag
     )
     compact.set_upstream(data_load)
