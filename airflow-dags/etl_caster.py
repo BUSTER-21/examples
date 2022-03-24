@@ -10,7 +10,7 @@ default_args = {
     'start_date': datetime.utcnow()
 }
 
-with DAG('dataload-01', default_args=default_args, schedule_interval=None,
+with DAG('etl_caster01', default_args=default_args, schedule_interval=None,
          max_active_tasks=40, max_active_runs=40) as dag:
     load_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
     node_selector = {"loader-node": "true"}
@@ -48,7 +48,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
         "falkonry_clue_livestream_non_cloud": "true",
         "falkonry_tiling_bulk_concurrency": "10",
         "falkonry_tiling_bulk_file_concurrency": "10",
-        "falkonry_tiling_bulk_db_concurrency": 25,
+        "falkonry_tiling_bulk_db_concurrency": "25",
         "AIOCACHE_DISABLE": "1"
     }
     for k, v in env_dict.items():
@@ -79,7 +79,7 @@ with DAG('dataload-01', default_args=default_args, schedule_interval=None,
     compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
     compact_envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="25"))
     compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_tile_metadata_db", value="remote"))
-    #compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
+    compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
     compact_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
 
     compact = KubernetesPodOperator(
