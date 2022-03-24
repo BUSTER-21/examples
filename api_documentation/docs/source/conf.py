@@ -32,8 +32,14 @@ intersphinx_disabled_domains = ['std']
 
 templates_path = ['_templates']
 
+html_static_path = ['../_static']
+
+html_css_files = [
+    'css/custom.css',
+]
+
 html_theme = 'sphinx_rtd_theme'
-html_logo = 'img/favicon.ico'
+html_logo = '../img/logo.png'
 html_theme_options = {
     'logo_only': True,
     'display_version': False,
