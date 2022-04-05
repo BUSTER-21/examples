@@ -53,15 +53,15 @@ with DAG('compact-01', default_args=default_args, schedule_interval=None,
         envs.append(k8s.V1EnvVar(name=k, value=v))
 
     envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
-    envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="30"))
+    envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="1"))
     envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
     compact_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
 
     compact = KubernetesPodOperator(
         namespace='falkonry',
-        image="quay.io/falkonry/tiling:issue-8936-6.latest",
+        image="quay.io/falkonry/tiling:issue-8936-7.latest",
         image_pull_secrets=image_pull_secrets,
-        resources=load_resources,
+        resources=compact_resources,
         node_selector=node_selector,
         env_vars=envs,
         image_pull_policy="Always",
