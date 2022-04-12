@@ -56,7 +56,7 @@ with DAG('etl_caster01', default_args=default_args, schedule_interval=None,
 
     data_load = KubernetesPodOperator(
         namespace='falkonry',
-        image="quay.io/falkonry/tiling:issue-8936-5.latest",
+        image="quay.io/falkonry/tiling:issue-8936-6.latest",
         image_pull_secrets=image_pull_secrets,
         resources=load_resources,
         node_selector=node_selector,
@@ -78,13 +78,13 @@ with DAG('etl_caster01', default_args=default_args, schedule_interval=None,
     compact_envs = envs.copy()
     compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_livestream_non_cloud", value="true"))
     compact_envs.append(k8s.V1EnvVar(name="falkonry_tiling_bulk_compact_concurrency", value="25"))
-    compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_tile_metadata_db", value="remote"))
+    #compact_envs.append(k8s.V1EnvVar(name="falkonry_clue_tile_metadata_db", value="remote"))
     compact_envs.append(k8s.V1EnvVar(name="AWS_DYN_ENDPOINT", value="http://localhost:8000"))
     compact_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
 
     compact = KubernetesPodOperator(
         namespace='falkonry',
-        image="quay.io/falkonry/tiling:issue-8936-5.latest",
+        image="quay.io/falkonry/tiling:issue-8936-6.latest",
         image_pull_secrets=image_pull_secrets,
         resources=compact_resources,
         node_selector=node_selector,
@@ -100,7 +100,7 @@ with DAG('etl_caster01', default_args=default_args, schedule_interval=None,
         name=f"compact",
         task_id=f"compact",
         get_logs=False,
-        is_delete_operator_pod=True,
+        is_delete_operator_pod=False,
         dag=dag
     )
     compact.set_upstream(data_load)
