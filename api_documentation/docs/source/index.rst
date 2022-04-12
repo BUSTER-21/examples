@@ -18,7 +18,7 @@ to authenticate as a user and have the same permissions as the user itself.
 
 .. note::
 
-  You can find your :access token: under API Tokens section.
+  You can find your :access token: under API Tokens section. Refer `here <https://docs.falkonry.ai/workbench/UserManagement.html#generate-and-use-api-tokens>`__.
 
 
 API Examples
