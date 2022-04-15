@@ -51,7 +51,8 @@ with DAG('load_only', default_args=default_args, schedule_interval=None,
         "falkonry_tiling_bulk_metadata_read_concurrency": "1",
         "falkonry_tiling_bulk_task_row_count_limit": "1000000",
         "falkonry_tiling_bulk_db_concurrency": "25",
-        "AIOCACHE_DISABLE": "1"
+        "AIOCACHE_DISABLE": "1",
+        "S3FS_LOGGING_LEVEL": "DEBUG"
     }
     for k, v in env_dict.items():
         envs.append(k8s.V1EnvVar(name=k, value=v))
