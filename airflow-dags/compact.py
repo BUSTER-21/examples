@@ -60,7 +60,7 @@ with DAG('compact-01', default_args=default_args, schedule_interval=None,
 
     compact = KubernetesPodOperator(
         namespace='falkonry',
-        image="quay.io/falkonry/tiling:issue-8936-7.latest",
+        image="quay.io/falkonry/tiling:issue-8936-8.latest",
         image_pull_secrets=image_pull_secrets,
         resources=compact_resources,
         node_selector=node_selector,
