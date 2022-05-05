@@ -59,7 +59,7 @@ with DAG('load_opt2', default_args=default_args, schedule_interval=None,
 
     data_load = KubernetesPodOperator(
         namespace='falkonry',
-        image="quay.io/falkonry/tiling:issue-8936-8.latest",
+        image="quay.io/falkonry/tiling:issue-8936-7.latest",
         image_pull_secrets=image_pull_secrets,
         resources=load_resources,
         node_selector=node_selector,
