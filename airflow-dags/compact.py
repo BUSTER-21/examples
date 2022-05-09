@@ -48,7 +48,8 @@ with DAG('compact-01', default_args=default_args, schedule_interval=None,
         "falkonry_tiling_bulk_concurrency": "20",
         "falkonry_tiling_bulk_file_concurrency": "10",
         "falkonry_tiling_bulk_compact_parent_concurrency": "10",
-        "AIOCACHE_DISABLE": "1"
+        "AIOCACHE_DISABLE": "1",
+        "LOG_LEVEL": "DEBUG"
     }
     for k, v in env_dict.items():
         envs.append(k8s.V1EnvVar(name=k, value=v))
