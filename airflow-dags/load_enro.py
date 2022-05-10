@@ -10,7 +10,7 @@ default_args = {
     'start_date': datetime.utcnow()
 }
 
-with DAG('load_opt2', default_args=default_args, schedule_interval=None,
+with DAG('load_enro', default_args=default_args, schedule_interval=None,
          max_active_tasks=20, max_active_runs=20) as dag:
     load_resources = V1ResourceRequirements(requests={"memory": "18Gi"}, limits={"memory": "18Gi"})
     node_selector = {"loader-node": "true"}
