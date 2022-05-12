@@ -74,7 +74,7 @@ with DAG('load_opt2', default_args=default_args, schedule_interval=None,
         labels={"purpose": "dataload", "process": "split"},
         name=f"split",
         task_id=f"split",
-        get_logs=True,
+        get_logs=False,
         is_delete_operator_pod=False,
         dag=dag
     )
