@@ -50,6 +50,7 @@ with DAG('load_opt2', default_args=default_args, schedule_interval=None,
         "falkonry_tiling_bulk_file_concurrency": "5",
         "falkonry_tiling_bulk_metadata_read_concurrency": "50",
         "falkonry_tiling_bulk_task_row_count_limit": "1000000",
+        "falkonry_tiling_bulk_split_reader_batch_size": "500000",
         "falkonry_tiling_bulk_db_concurrency": "10",
         "AIOCACHE_DISABLE": "1",
         "S3FS_LOGGING_LEVEL": "DEBUG"
