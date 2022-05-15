@@ -12,7 +12,7 @@ default_args = {
 
 with DAG('load_opt2', default_args=default_args, schedule_interval=None,
          max_active_tasks=20, max_active_runs=20) as dag:
-    load_resources = V1ResourceRequirements(requests={"memory": "30Gi"}, limits={"memory": "30Gi"})
+    load_resources = V1ResourceRequirements(requests={"memory": "40Gi"}, limits={"memory": "40Gi"})
     node_selector = {"loader-node": "true"}
     image_pull_secrets = [k8s.V1LocalObjectReference('falkonry-pull-secret')]
 
