@@ -18,36 +18,34 @@
     },
     "Host": {
       "type": "String",
-      "defaultValue": "a1ow6upe2w48eg-ats.iot.us-west-2.amazonaws.com",
+      "defaultValue": "a3pr2w6u0y3ebe-ats.iot.us-west-2.amazonaws.com",
       "metadata": {
-        "description": "The host endpoint to publish"
+        "description": "Falkonry's MQTT Broker Endpoint"
       }
     },
     "port": {
       "type": "int",
       "defaultValue": 8883,
       "metadata": {
-        "description": "The Port number"
+        "description": "Falkonry's MQTT Broker Port Number"
       }
     },
-    "ClientID": {
+    "Certificate ID": {
       "type": "String",
       "metadata": {
-        "description": "The Client ID of device"
+        "description": "Falkonry Generated Certificate ID"
       }
     },
     "Account ID": {
       "type": "String",
-      "defaultValue": "account_id",
       "metadata": {
-        "description": "The Falkonry account id"
+        "description": "Your Falkonry Account ID"
       }
     },
     "Connection ID": {
       "type": "String",
-      "defaultValue": "connection_id",
       "metadata": {
-        "description": "The connection id on which data will be sent"
+        "description": "Falkonry Generated Connection ID"
       }
     }
   },
@@ -55,12 +53,9 @@
     "functionAppName": "[parameters('Connector name')]",
     "hostingPlanName": "[concat(parameters('Connector name'), '-hosting-plan')]",
     "storageAccountName": "[concat(toLower(replace(parameters('Connector Name'), '-', '')), 'storage')]",
-    "datalakeName": "[concat(toLower(replace(parameters('Connector Name'), '-', '')), 'datalake')]",
     "applicationInsightsName": "[concat(parameters('Connector name'),'-app-insights')]",
     "streamAnalyticsName": "[concat(parameters('Connector Name'), '-stream-analytics')]",
     "sku": "Standard_LRS",
-    "datalakeSKU": "Standard_RAGRS",
-    "datalakeContainer": "falkonry",
     "asaQuery": "[concat('SELECT ''', parameters('Account ID'), ''' as tenant, ''', parameters('Connection ID'), ''' as connection, inputeventhub as message INTO falkonry FROM inputeventhub')]"
   },
   "resources": [
@@ -76,39 +71,6 @@
         "minimumTlsVersion": "TLS1_0"
       },
       "kind": "StorageV2"
-    },
-    {
-      "name": "[variables('datalakeName')]",
-      "type": "Microsoft.Storage/storageAccounts",
-      "apiVersion": "2021-02-01",
-      "location": "[resourceGroup().location]",
-      "properties": {
-        "accessTier": "Hot",
-        "minimumTlsVersion": "TLS1_2",
-        "supportsHttpsTrafficOnly": true,
-        "allowBlobPublicAccess": true,
-        "allowSharedKeyAccess": true,
-        "networkAcls": {
-          "bypass": "AzureServices",
-          "defaultAction": "Allow",
-          "ipRules": []
-        },
-        "isHnsEnabled": true
-      },
-      "sku": {
-        "name": "[variables('datalakeSKU')]"
-      },
-      "kind": "StorageV2",
-      "resources": [
-         {
-          "type": "blobServices/containers",
-          "apiVersion": "2019-06-01",
-          "name": "[concat('default/', variables('datalakeContainer'))]",
-          "dependsOn": [
-            "[variables('datalakeName')]"
-          ]
-        }
-      ]
     },
     {
       "type": "Microsoft.Web/serverfarms",
@@ -158,7 +120,7 @@
             },
             {
               "name": "ClientId",
-              "value": "[parameters('ClientID')]"
+              "value": "[parameters('Certificate ID')]"
             },
             {
               "name": "Host",
@@ -272,17 +234,9 @@
     }
   ],
   "outputs": {
-    "Datalake URL": {     
+    "Function App": {     
       "type": "string",
-      "value": "[concat('https://', variables('datalakeName'), '.dfs.', environment().suffixes.storage)]"
-    },
-    "Datalake Connection String": {
-      "type": "string",
-      "value": "[concat('DefaultEndpointsProtocol=https;AccountName=', variables('datalakeName'), ';AccountKey=',listKeys(resourceId('Microsoft.Storage/storageAccounts', variables('datalakeName')), '2021-02-01').keys[0].value, ';EndpointSuffix=', environment().suffixes.storage)]"
-    },
-    "Container Path": {
-      "type": "string",
-      "value": "[concat('abfs://', variables('datalakeContainer'), '@', variables('datalakeName'), '.dfs.', environment().suffixes.storage)]"
+      "value": "[variables('functionAppName')]"
     }
   }
 }
