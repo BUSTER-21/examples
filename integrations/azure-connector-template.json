@@ -16,10 +16,24 @@
         "description": "The URL on which the function code and files are hosted"
       }
     },
-    "API Gateway URL": {
+    "Host": {
+      "type": "String",
+      "defaultValue": "a1ow6upe2w48eg-ats.iot.us-west-2.amazonaws.com",
+      "metadata": {
+        "description": "The host endpoint to publish"
+      }
+    },
+    "port": {
+      "type": "int",
+      "defaultValue": 8883,
+      "metadata": {
+        "description": "The Port number"
+      }
+    },
+    "ClientID": {
       "type": "String",
       "metadata": {
-        "description": "The AWS API Gateway URL on which data will be sent"
+        "description": "The Client ID of device"
       }
     },
     "Account ID": {
@@ -127,12 +141,28 @@
         "siteConfig": {
           "appSettings": [
             {
-              "name": "falkonry_aws_api_gateway_url",
-              "value": "[parameters('API Gateway URL')]"
+              "name": "port",
+              "value": "[parameters('port')]"
             },
             {
-              "name": "falkonry_aws_api_gateway_cert",
-              "value": "cert.pem"
+              "name": "falkonry_aws_private_key",
+              "value": "privateKey.key"
+            },
+            {
+              "name": "falkonry_amazonrootca2",
+              "value": "AmazonRootCA2.pem"
+            },
+            {
+              "name": "falkonry_aws_certificate",
+              "value": "certificate.pem"
+            },
+            {
+              "name": "ClientId",
+              "value": "[parameters('ClientID')]"
+            },
+            {
+              "name": "Host",
+              "value": "[parameters('Host')]"
             },
             {
               "name": "falkonry_account_id",
@@ -242,7 +272,7 @@
     }
   ],
   "outputs": {
-    "Datalake URL": {
+    "Datalake URL": {     
       "type": "string",
       "value": "[concat('https://', variables('datalakeName'), '.dfs.', environment().suffixes.storage)]"
     },
