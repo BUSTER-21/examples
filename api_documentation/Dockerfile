@@ -8,7 +8,6 @@ RUN apt-get -y install python3-tk
 RUN apt -y install curl && apt -y install unzip
 COPY . ./
 WORKDIR /api_documentation/docs
-# RUN ./img_capture/setup.sh
 RUN pip3 install -r ./requirements.txt
 
 RUN make html
